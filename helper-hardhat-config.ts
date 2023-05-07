@@ -22,5 +22,7 @@ const networkConfig = {
 
 const developmentChains = ['localhost', 'hardhat']
 const VERIFICATION_BLOCK_CONFIRMATIONS = 6
+export const DECIMALS = '18'
+export const INITIAL_PRICE = '200000000000000000000'
 
 export { networkConfig, developmentChains, VERIFICATION_BLOCK_CONFIRMATIONS }
