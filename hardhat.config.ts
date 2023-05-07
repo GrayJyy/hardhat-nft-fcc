@@ -33,6 +33,7 @@ const config: HardhatUserConfig = {
   },
   namedAccounts: { deployer: { default: 0, 1: 0 } },
   etherscan: { apiKey: ETHERSCAN_API_KEY },
+  gasReporter: { enabled: false },
 }
 
 export default config
