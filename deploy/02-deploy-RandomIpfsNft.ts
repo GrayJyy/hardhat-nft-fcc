@@ -11,7 +11,11 @@ const deployRandomIpfsNft = async (hre: HardhatRuntimeEnvironment) => {
   const { deployer } = await getNamedAccounts()
   const waitConfirmations = developmentChains.includes(network.name) ? 1 : VERIFICATION_BLOCK_CONFIRMATIONS
   const chainId = network.config.chainId as number
+  let tokenUris
   const currentConfig = networkConfig[chainId]
+  if (process.env.UPLOAD_TO_PINATA) {
+    tokenUris = await handleTokenUris()
+  }
   let vrfCoordinatorV2Address, subscriptionId
   if (chainId === 31337) {
     const vrfCoordinatorV2MockRes = await deployments.get('VRFCoordinatorV2Mock')
@@ -49,6 +53,12 @@ const deployRandomIpfsNft = async (hre: HardhatRuntimeEnvironment) => {
     log('Verifying......')
     await verify(randomIpfsNft.address, args)
   }
+}
+
+const handleTokenUris = async () => {
+  //   const tokenUris = []
+  //   //...
+  //   return tokenUris
 }
 deployRandomIpfsNft.tags = ['all', 'randomipfsnft', 'main']
 export default deployRandomIpfsNft
