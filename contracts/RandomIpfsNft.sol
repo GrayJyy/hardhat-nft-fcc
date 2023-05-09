@@ -84,12 +84,12 @@ contract RandomIpfsNft is VRFConsumerBaseV2, ERC721URIStorage, Ownable {
         uint256[] memory randomWords
     ) internal override {
         address tokenOwner = s_requestIdToSender[requestId];
-        uint256 newRequestId = s_counter;
+        uint256 newTokenId = s_counter;
         s_counter += 1;
         uint256 target = randomWords[0] % MAX_CHANCE_VALUE;
         Dog dog = getNftType(target);
-        _safeMint(tokenOwner, newRequestId); // reverted with reason string "ERC721: invalid token ID"
-        _setTokenURI(newRequestId, s_dogTokenUris[uint256(dog)]);
+        _safeMint(tokenOwner, newTokenId); // reverted with reason string "ERC721: invalid token ID"
+        _setTokenURI(newTokenId, s_dogTokenUris[uint256(dog)]);
         emit NftMinted(dog, tokenOwner);
     }
 
