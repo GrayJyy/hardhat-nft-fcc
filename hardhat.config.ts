@@ -5,7 +5,7 @@ import 'hardhat-deploy' // add this line
 import { ProxyAgent, setGlobalDispatcher } from 'undici'
 
 useConfig()
-// 通过Clash的本地代理 解决非本地网络合约Verify超时的网络问题，需要安装undici
+// 通过Clash的Allow LAN实现局域网翻墙 解决非本地网络合约Verify超时的网络问题 开启Clash局域网代理+安装undici两个条件缺一不可，这段代码才能正常运行
 const proxyAgent = new ProxyAgent('http://127.0.0.1:7890')
 setGlobalDispatcher(proxyAgent)
 const SEPOLIA_RPC_URL = process.env.SEPOLIA_RPC_URL
