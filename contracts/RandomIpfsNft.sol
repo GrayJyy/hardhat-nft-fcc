@@ -88,8 +88,8 @@ contract RandomIpfsNft is VRFConsumerBaseV2, ERC721URIStorage, Ownable {
         s_counter += 1;
         uint256 target = randomWords[0] % MAX_CHANCE_VALUE;
         Dog dog = getNftType(target);
+        _safeMint(tokenOwner, newRequestId); // reverted with reason string "ERC721: invalid token ID"
         _setTokenURI(newRequestId, s_dogTokenUris[uint256(dog)]);
-        _safeMint(tokenOwner, s_counter);
         emit NftMinted(dog, tokenOwner);
     }
 
@@ -97,7 +97,7 @@ contract RandomIpfsNft is VRFConsumerBaseV2, ERC721URIStorage, Ownable {
         uint256 cumulativeSum = 0;
         uint256[3] memory array = getChanceArray();
         for (uint i = 0; i < array.length; i++) {
-            if (target > cumulativeSum && target < array[i]) {
+            if (target > cumulativeSum && target < cumulativeSum + array[i]) {
                 return Dog(i);
             }
             cumulativeSum += array[i];

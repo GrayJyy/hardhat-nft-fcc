@@ -1,7 +1,7 @@
 import { network, deployments, ethers } from 'hardhat'
-import { BasicNft } from '../typechain-types'
+import { BasicNft } from '../../typechain-types'
 import { expect, assert } from 'chai'
-import { developmentChains } from '../helper-hardhat-config'
+import { developmentChains } from '../../helper-hardhat-config'
 
 !developmentChains.includes(network.name)
   ? describe.skip

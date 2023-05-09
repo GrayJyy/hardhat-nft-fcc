@@ -3,7 +3,6 @@ import { VERIFICATION_BLOCK_CONFIRMATIONS, developmentChains, networkConfig } fr
 import { ethers } from 'hardhat'
 import verify from '../utils/verify'
 import { storageImage, storeTokenUriMetadata } from '../utils/uploadToPinata'
-
 export type metadataTemplate = {
   name: string
   description: string
@@ -29,10 +28,10 @@ const deployRandomIpfsNft = async (hre: HardhatRuntimeEnvironment) => {
   if (process.env.UPLOAD_TO_PINATA) {
     tokenUris = await handleTokenUris()
   }
-  let vrfCoordinatorV2Address, subscriptionId
+  let vrfCoordinatorV2Address, subscriptionId, vrfCoordinatorV2Mock
   if (chainId === 31337) {
     const vrfCoordinatorV2MockRes = await deployments.get('VRFCoordinatorV2Mock')
-    const vrfCoordinatorV2Mock = await ethers.getContractAt('VRFCoordinatorV2Mock', vrfCoordinatorV2MockRes.address)
+    vrfCoordinatorV2Mock = await ethers.getContractAt('VRFCoordinatorV2Mock', vrfCoordinatorV2MockRes.address)
     vrfCoordinatorV2Address = vrfCoordinatorV2Mock.address
     const transactionResponse = await vrfCoordinatorV2Mock.createSubscription()
     const transactionReceipt = await transactionResponse.wait()
@@ -68,12 +67,31 @@ const deployRandomIpfsNft = async (hre: HardhatRuntimeEnvironment) => {
     log: true,
     waitConfirmations,
   })
-  log('----------------------------------')
-  log(`RandomIpfsNft Deployed at address ${randomIpfsNft.address}`)
-  log('----------------------------------')
+
+  console.log('----------------------------------')
+  console.log(`RandomIpfsNft Deployed at address ${randomIpfsNft.address}`)
+  console.log('----------------------------------')
+
+  /**
+   * 为什么要调用addConsumer函数？
+   * 在vrfCoordinatorV2Mock接口中，fulfillRandomWords函数用了onlyValidConsumer修饰器修饰：
+   *   modifier onlyValidConsumer(uint64 _subId, address _consumer) {
+    if (!consumerIsAdded(_subId, _consumer)) { // consumerIsAdded判断是否通过addConsumer函数添加了消费者，如果没有，抛出InvalidConsumer错误
+      revert InvalidConsumer();
+    }
+    _;
+  }
+  因此，如果用到了vrfCoordinatorV2Mock合约，那么需要手动调用addConsumer(订阅id，消费者地址)，使得后续fulfillRandomWords函数可以正常调用
+  如果没有这段代码，后续在本地环境测试时，总会抛出InvalidConsumer错误。
+  至于为什么VRFCoordinatorV2合约不需要手动调用这个函数而vrfCoordinatorV2Mock需要，是因为前者的fulfillRandomWords没有用onlyValidConsumer修饰器修饰
+  这段代码需要注意放在vrfCoordinatorV2Mock和randomIpfsNft都deploy以后
+   */
+  if (vrfCoordinatorV2Mock) {
+    await vrfCoordinatorV2Mock.addConsumer(subscriptionId, randomIpfsNft.address)
+  }
   //   Verify
   if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
-    log('Verifying......')
+    console.log('Verifying......')
     await verify(randomIpfsNft.address, args)
   }
 }

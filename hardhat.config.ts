@@ -2,12 +2,16 @@ import { HardhatUserConfig } from 'hardhat/config'
 import '@nomicfoundation/hardhat-toolbox'
 import { config as useConfig } from 'dotenv'
 import 'hardhat-deploy' // add this line
+import { ProxyAgent, setGlobalDispatcher } from 'undici'
 
 useConfig()
+// 通过Clash的本地代理 解决非本地网络合约Verify超时的网络问题，需要安装undici
+const proxyAgent = new ProxyAgent('http://127.0.0.1:7890')
+setGlobalDispatcher(proxyAgent)
 const SEPOLIA_RPC_URL = process.env.SEPOLIA_RPC_URL
 const PRIVATE_KEY = process.env.PRIVATE_KEY as string
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY
-const MAINNET_RPC_URL = process.env.MAINNET_RPC_URL as string
+// const MAINNET_RPC_URL = process.env.MAINNET_RPC_URL as string
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -36,6 +40,7 @@ const config: HardhatUserConfig = {
   namedAccounts: { deployer: { default: 0, 1: 0 } },
   etherscan: { apiKey: ETHERSCAN_API_KEY },
   gasReporter: { enabled: false },
+  mocha: { timeout: 500000 },
 }
 
 export default config
