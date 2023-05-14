@@ -1,8 +1,8 @@
-import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { VERIFICATION_BLOCK_CONFIRMATIONS, developmentChains, networkConfig } from '../helper-hardhat-config'
 import { ethers } from 'hardhat'
 import verify from '../utils/verify'
 import { storageImage, storeTokenUriMetadata } from '../utils/uploadToPinata'
+import { DeployFunction } from 'hardhat-deploy/dist/types'
 export type metadataTemplate = {
   name: string
   description: string
@@ -17,7 +17,7 @@ export type metadataTemplate = {
 const FUND_AMOUNT = '1000000000000000000000'
 const IMAGES_PATH = './images/randomNft'
 
-const deployRandomIpfsNft = async (hre: HardhatRuntimeEnvironment) => {
+const deployRandomIpfsNft: DeployFunction = async hre => {
   const { deployments, getNamedAccounts, network } = hre
   const { deploy, log } = deployments
   const { deployer } = await getNamedAccounts()
@@ -68,9 +68,9 @@ const deployRandomIpfsNft = async (hre: HardhatRuntimeEnvironment) => {
     waitConfirmations,
   })
 
-  console.log('----------------------------------')
-  console.log(`RandomIpfsNft Deployed at address ${randomIpfsNft.address}`)
-  console.log('----------------------------------')
+  log('----------------------------------')
+  log(`RandomIpfsNft Deployed at address ${randomIpfsNft.address}`)
+  log('----------------------------------')
 
   /**
    * 为什么要调用addConsumer函数？

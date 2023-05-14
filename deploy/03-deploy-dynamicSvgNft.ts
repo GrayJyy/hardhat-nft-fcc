@@ -1,9 +1,9 @@
-import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { VERIFICATION_BLOCK_CONFIRMATIONS, developmentChains, networkConfig } from '../helper-hardhat-config'
 import verify from '../utils/verify'
 import fs from 'fs'
+import { DeployFunction } from 'hardhat-deploy/dist/types'
 
-const deployDynamicSvgNft = async (hre: HardhatRuntimeEnvironment) => {
+const deployDynamicSvgNft: DeployFunction = async hre => {
   const { getNamedAccounts, network, deployments } = hre
   const { deploy, log } = deployments
   const { deployer } = await getNamedAccounts()

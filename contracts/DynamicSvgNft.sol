@@ -44,6 +44,10 @@ contract DynamicSvgNft is ERC721 {
         emit CreateNft(_tokenId, value);
     }
 
+    /**
+     * data:application/json;base64 是一种数据 URI 方案，用于以 Base64 编码的形式嵌入 JSON 数据。
+     * 它是一个完整的 URL，可以直接在浏览器中打开，以获取 JSON 数据。
+     */
     function _baseURI() internal pure override returns (string memory) {
         return "data:application/json;base64,";
     }

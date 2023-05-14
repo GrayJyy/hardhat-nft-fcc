@@ -1,8 +1,8 @@
-import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { VERIFICATION_BLOCK_CONFIRMATIONS, developmentChains } from '../helper-hardhat-config'
 import verify from '../utils/verify'
+import { DeployFunction } from 'hardhat-deploy/dist/types'
 
-const deployBasicNft = async (hre: HardhatRuntimeEnvironment) => {
+const deployBasicNft: DeployFunction = async hre => {
   const { getNamedAccounts, deployments, network } = hre
   const { deploy, log } = deployments
   const { deployer } = await getNamedAccounts()
