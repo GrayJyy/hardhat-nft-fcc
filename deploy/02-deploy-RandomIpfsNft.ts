@@ -91,7 +91,7 @@ const deployRandomIpfsNft: DeployFunction = async hre => {
   }
   //   Verify
   if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
-    console.log('Verifying......')
+    log('Verifying......')
     await verify(randomIpfsNft.address, args)
   }
 }

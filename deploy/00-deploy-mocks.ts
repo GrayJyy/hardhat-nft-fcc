@@ -8,7 +8,7 @@ const deployMocks: DeployFunction = async hre => {
   const { deploy, log } = deployments
   const chainId = network.config.chainId
   const { deployer } = await getNamedAccounts()
-  if (chainId == 31337) {
+  if (chainId === 31337) {
     log('Local network detected! Deploying mocks...')
     await deploy('VRFCoordinatorV2Mock', {
       from: deployer,
