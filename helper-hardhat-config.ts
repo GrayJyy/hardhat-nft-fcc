@@ -25,7 +25,7 @@ const networkConfig: networkConfigInfo = {
     gasLane: '0x474e34a077df58807dbe9c96d3c009b23b3c6d0cce433e59bbf5b34f823bc56c',
     callbackGasLimit: '500000',
     mintFee: '10000000000000000', // 0.01 ETH
-    ethUsdPriceFeed: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419',
+    ethUsdPriceFeed: '0x694AA1769357215DE4FAC081bf1f309aDC325306',
   },
 }
 
