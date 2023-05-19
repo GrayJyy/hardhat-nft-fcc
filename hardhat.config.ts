@@ -35,7 +35,7 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: { chainId: 31337 },
     localhost: { chainId: 31337 },
-    sepolia: { chainId: 11155111, url: SEPOLIA_RPC_URL, accounts: [PRIVATE_KEY] },
+    sepolia: { chainId: 11155111, url: SEPOLIA_RPC_URL, accounts: [PRIVATE_KEY], gas: 2100000, gasPrice: 8000000000 },
   },
   namedAccounts: { deployer: { default: 0, 1: 0 } },
   etherscan: { apiKey: ETHERSCAN_API_KEY },
